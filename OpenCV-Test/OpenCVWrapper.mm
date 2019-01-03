@@ -14,20 +14,17 @@
 OpenCVWrapper() <CvVideoCameraDelegate> {
     CvVideoCamera *cvCamera;
 }
+- (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int) l_threshold;
 @end
 
 @implementation OpenCVWrapper
 
 - (void)processImage:(cv::Mat &)image {
     cv::Mat image_copy;
-    cv::cvtColor(image, image_copy, CV_BGRA2BGR);
-    //invert imege
-    cv::bitwise_not(image_copy, image_copy);
-//    image_copy = [self thresholdByColor:image];
-//    std::vector< std::vector<cv::Point> > contours;
-//    cv::findContours(image_copy, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
-//    cv::drawContours(image_copy, contours, 1, cv::Scalar(255), -1);
-//
+//    cv::cvtColor(image, image_copy, CV_BGRA2BGR);
+//    //invert imege
+//    cv::bitwise_not(image_copy, image_copy);
+    image_copy = [self binarizeByLightness:image l_threshold:128];
     cv::cvtColor(image_copy, image, CV_BGR2BGRA);
 }
 
@@ -44,30 +41,25 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     [cvCamera start];
 }
 
-//+ (cv::Mat) thresholdByColor:(cv::Mat)src
-//{
-//    // 結果保存用
-//    cv::Mat dst(src.rows,src.cols,CV_8UC1);
-//
-//    for (int y=0; y<dst.rows; y++) {
-//        cv::Vec4b *s = src.ptr<cv::Vec4b>(y);
-//        uchar *d = dst.ptr<uchar>(y);
-//        for (int x=0; x < dst.cols; x++) {
-//            int b = s[x][0],g = s[x][1],r = s[x][2];
-//            d[x] = 255;
-//            // 青いベルトの色の範囲は以下とする。
-//            // 明るい青い部分；B>=200 & B>G+40 & B>R+50
-//
-//            if (b >= 200 && b > (g + 40) && b > (r + 50)){
-//                d[x] = 0;
-//            }
-//            // 暗いベルトの部分；B<200 & B>=100 & B>G+35 & B>R+5
-//            if (b < 200 && b >= 100 && b > (g + 35) && b > (r + 5)){
-//                d[x] = 0;
-//            }
-//        }
-//    }
-//    return dst;
-//}
+- (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int)l_threshold
+{
+    
+    cv::Mat mid;
+    cv::cvtColor(src, mid, CV_BGR2HLS);
+    cv::Mat dst(src.rows,src.cols,CV_8UC1); // 結果保存用
+    for (int y=0; y<dst.rows; y++) {
+        for (int x=0; x < dst.cols; x++) {
+            int index = (int) mid.step * y + (x * 3);
+            int dst_index = (int) dst.step * y + x;
+            int l = mid.data[index+1];
+            if (l > l_threshold) {
+                dst.data[dst_index] = 255;
+            } else {
+                dst.data[dst_index] = 0;
+            }
+        }
+    }
+    return dst;
+}
 
 @end
