@@ -40,8 +40,13 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     cvCamera.grayscaleMode = NO;
     cvCamera.delegate = self;
 }
+
 - (void) start{
     [cvCamera start];
+}
+
+- (void) toggleCameraPosition {
+    [cvCamera switchCameras];
 }
 
 - (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int)l_threshold

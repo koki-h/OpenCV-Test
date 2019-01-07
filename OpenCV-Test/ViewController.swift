@@ -28,5 +28,9 @@ class ViewController: UIViewController {
     @IBAction func threshold_l_changed(_ sender: UISlider) {
         openCv.param["l_threshold"] = sender.value
     }
+    
+    @IBAction func tapCameraSwitch(_ sender: Any) {
+        openCv.toggleCameraPosition()
+    }
 }
 
