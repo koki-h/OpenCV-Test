@@ -15,6 +15,7 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     CvVideoCamera *cvCamera;
 }
 - (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int) l_threshold;
+- (cv::Mat) drawContours:(cv::Mat)mask canvas:(cv::Mat)canvas;
 @end
 
 @implementation OpenCVWrapper
@@ -27,8 +28,8 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     int l_threshold = [[_param objectForKey: @"l_threshold"] intValue];
 
     image_copy = [self binarizeByLightness:image l_threshold:l_threshold];
-//    image = [self drawContours:image_copy canvas:image];
-    cv::cvtColor(image_copy, image, CV_BGR2BGRA);
+    image = [self drawContours:image_copy canvas:image];
+    cv::cvtColor(image, image, CV_BGR2BGRA);
 }
 
 - (void) createCameraWithParentView:(UIImageView*) parentView {
@@ -47,6 +48,17 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
 
 - (void) toggleCameraPosition {
     [cvCamera switchCameras];
+}
+
+- (cv::Mat) drawContours:(cv::Mat)mask  canvas:(cv::Mat)canvas
+{
+    //cv::Mat dst(mask.rows,mask.cols,CV_8UC1); // 結果保存用
+    std::vector< std::vector<cv::Point> > contours;
+    cv::findContours(mask, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+    if (contours.size() > 1) {
+        cv::drawContours(canvas, contours, -1, cv::Scalar(255),1);
+    }
+    return canvas;
 }
 
 - (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int)l_threshold
