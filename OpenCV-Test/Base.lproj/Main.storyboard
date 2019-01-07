@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="255" translatesAutoresizingMaskIntoConstraints="NO" id="QOr-9A-a2x" userLabel="threshold_l_slider">
-                                <rect key="frame" x="34" y="440" width="195" height="31"/>
+                                <rect key="frame" x="24" y="440" width="173" height="31"/>
                                 <connections>
                                     <action selector="threshold_l_changed:" destination="BYZ-38-t0r" eventType="valueChanged" id="qJI-h8-A5y"/>
                                 </connections>
@@ -51,21 +51,31 @@
                                     <action selector="tapCameraSwitch:" destination="BYZ-38-t0r" eventType="touchDown" id="fWI-Zb-0y7"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PiM-ur-VkO">
+                                <rect key="frame" x="205" y="439.5" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchMode:" destination="BYZ-38-t0r" eventType="valueChanged" id="elR-XN-dTU"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="rm7-sI-Ry0" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" constant="6" id="B0A-vV-rYm"/>
+                            <constraint firstItem="rm7-sI-Ry0" firstAttribute="leading" secondItem="PiM-ur-VkO" secondAttribute="trailing" constant="5" id="PUz-wN-4KG"/>
                             <constraint firstAttribute="bottomMargin" secondItem="QOr-9A-a2x" secondAttribute="bottom" constant="10" id="Tyl-RA-wpe"/>
                             <constraint firstItem="rm7-sI-Ry0" firstAttribute="centerY" secondItem="QOr-9A-a2x" secondAttribute="centerY" id="VA6-Br-Zfz"/>
-                            <constraint firstItem="QOr-9A-a2x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="bDg-ec-gR3"/>
+                            <constraint firstItem="rm7-sI-Ry0" firstAttribute="centerY" secondItem="PiM-ur-VkO" secondAttribute="centerY" id="aVQ-Zb-F76"/>
+                            <constraint firstItem="QOr-9A-a2x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="bDg-ec-gR3"/>
                             <constraint firstItem="LtC-j3-pc2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="10" id="hfZ-bG-x9G"/>
-                            <constraint firstItem="rm7-sI-Ry0" firstAttribute="leading" secondItem="QOr-9A-a2x" secondAttribute="trailing" constant="32" id="k8b-D3-k6s"/>
                             <constraint firstItem="LtC-j3-pc2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="n6f-x1-oJO"/>
+                            <constraint firstItem="PiM-ur-VkO" firstAttribute="leading" secondItem="QOr-9A-a2x" secondAttribute="trailing" constant="10" id="qCE-Mf-nQT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="w4K-O8-6GZ"/>
                     </view>
                     <connections>
                         <outlet property="imgView" destination="LtC-j3-pc2" id="Oau-Bi-rei"/>
+                        <outlet property="slThresholdLight" destination="QOr-9A-a2x" id="shB-Qk-3PG"/>
+                        <outlet property="swMode" destination="PiM-ur-VkO" id="J2Y-AS-23Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
