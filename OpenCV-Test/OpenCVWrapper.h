@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OpenCVWrapper : NSObject
+@property NSDictionary *param;
 - (void) createCameraWithParentView:(UIImageView*) parentView;
 - (void) start;
 @end

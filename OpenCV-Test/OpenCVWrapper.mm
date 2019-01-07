@@ -20,11 +20,14 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
 @implementation OpenCVWrapper
 
 - (void)processImage:(cv::Mat &)image {
-    cv::Mat image_copy;
+        cv::Mat image_copy;
 //    cv::cvtColor(image, image_copy, CV_BGRA2BGR);
 //    //invert imege
 //    cv::bitwise_not(image_copy, image_copy);
-    image_copy = [self binarizeByLightness:image l_threshold:128];
+    int l_threshold = [[_param objectForKey: @"l_threshold"] intValue];
+
+    image_copy = [self binarizeByLightness:image l_threshold:l_threshold];
+//    image = [self drawContours:image_copy canvas:image];
     cv::cvtColor(image_copy, image, CV_BGR2BGRA);
 }
 
