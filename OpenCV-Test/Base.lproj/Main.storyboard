@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,28 +14,30 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="OpenCV_Test" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LtC-j3-pc2">
-                                <rect key="frame" x="50" y="30" width="275" height="507"/>
-                            </imageView>
                             <slider opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="255" translatesAutoresizingMaskIntoConstraints="NO" id="QOr-9A-a2x" userLabel="threshold_l_slider">
-                                <rect key="frame" x="48" y="587" width="279" height="31"/>
+                                <rect key="frame" x="48" y="440" width="224" height="31"/>
                                 <connections>
                                     <action selector="threshold_l_changed:" destination="BYZ-38-t0r" eventType="valueChanged" id="qJI-h8-A5y"/>
                                 </connections>
                             </slider>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LtC-j3-pc2">
+                                <rect key="frame" x="10" y="30" width="300" height="400"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="Er6-Xk-CmP"/>
+                                    <constraint firstAttribute="width" constant="300" id="NFn-eT-Z7s"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="QOr-9A-a2x" firstAttribute="top" secondItem="LtC-j3-pc2" secondAttribute="bottom" constant="50" id="CDo-kb-lpR"/>
-                            <constraint firstAttribute="trailing" secondItem="QOr-9A-a2x" secondAttribute="trailing" constant="50" id="Mbc-c5-AJi"/>
-                            <constraint firstItem="LtC-j3-pc2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="30" id="Nkh-Lw-B9m"/>
-                            <constraint firstAttribute="bottom" secondItem="QOr-9A-a2x" secondAttribute="bottom" constant="50" id="aN0-Kh-MhH"/>
-                            <constraint firstItem="QOr-9A-a2x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="gu6-Cb-86M"/>
-                            <constraint firstItem="LtC-j3-pc2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="ke8-OW-o5P"/>
-                            <constraint firstAttribute="trailing" secondItem="LtC-j3-pc2" secondAttribute="trailing" constant="50" id="wRd-cn-LJa"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="QOr-9A-a2x" secondAttribute="bottom" constant="10" id="Tyl-RA-wpe"/>
+                            <constraint firstItem="QOr-9A-a2x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="34" id="bDg-ec-gR3"/>
+                            <constraint firstItem="LtC-j3-pc2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="10" id="hfZ-bG-x9G"/>
+                            <constraint firstItem="LtC-j3-pc2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="n6f-x1-oJO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="QOr-9A-a2x" secondAttribute="trailing" constant="34" id="s7a-TA-o8B"/>
                         </constraints>
                     </view>
                     <connections>
