@@ -14,8 +14,6 @@
 OpenCVWrapper() <CvVideoCameraDelegate> {
     CvVideoCamera *cvCamera;
 }
-//- (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int) l_threshold;
-//- (cv::Mat) drawContours:(cv::Mat)mask canvas:(cv::Mat)canvas;
 @end
 
 @implementation OpenCVWrapper
