@@ -19,10 +19,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         openCv.createCamera(withParentView: imgView)
-        openCv.param["l_threshold"] = 128
-        openCv.param["mode_binalized"] = false
-        swMode.isOn = openCv.param["mode_binalized"] as! Bool
-        slThresholdLight.value = Float(openCv.param["l_threshold"] as! Int)
+        openCv.param["slider_value"] = 128
+        openCv.param["filter_on"] = false
+        swMode.isOn = openCv.param["filter_on"] as! Bool
+        slThresholdLight.value = Float(openCv.param["slider_value"] as! Int)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -31,11 +31,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func threshold_l_changed(_ sender: UISlider) {
-        openCv.param["l_threshold"] = Int(sender.value)
+        openCv.param["slider_value"] = Int(sender.value)
     }
     
     @IBAction func switchMode(_ sender: UISwitch) {
-        openCv.param["mode_binalized"] = sender.isOn
+        openCv.param["filter_on"] = sender.isOn
     }
     
     @IBAction func tapCameraSwitch(_ sender: Any) {

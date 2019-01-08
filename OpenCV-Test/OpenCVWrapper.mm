@@ -14,24 +14,48 @@
 OpenCVWrapper() <CvVideoCameraDelegate> {
     CvVideoCamera *cvCamera;
 }
-- (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int) l_threshold;
-- (cv::Mat) drawContours:(cv::Mat)mask canvas:(cv::Mat)canvas;
+//- (cv::Mat) binarizeByLightness:(cv::Mat)src l_threshold:(int) l_threshold;
+//- (cv::Mat) drawContours:(cv::Mat)mask canvas:(cv::Mat)canvas;
 @end
 
 @implementation OpenCVWrapper
 
 - (void)processImage:(cv::Mat &)image {
     cv::Mat image_copy;
-    int l_threshold = [[_param objectForKey: @"l_threshold"] intValue];
-    bool mode_binalized = [[_param objectForKey:@"mode_binalized"] boolValue];
-    image_copy = [self binarizeByLightness:image l_threshold:l_threshold];
-    if (mode_binalized) {
-        cv::cvtColor(image_copy, image, CV_BGR2BGRA); //二値化した白黒画像を表示
-    } else {
-        // しきい値の境界線を描画して表示
-        image = [self drawContours:image_copy canvas:image];
-        cv::cvtColor(image, image, CV_BGR2BGRA);
+    int slider_value = [[_param objectForKey: @"slider_value"] intValue];
+    bool filter_on = [[_param objectForKey:@"filter_on"] boolValue];
+    if (filter_on) {
+//        image = [self filterpyrDown:image slider_value:slider_value];
+//        image = [self filterLightnessBinalized:image slider_value:slider_value];
+        image = [self filterLightnessContour:image slider_value:slider_value];
     }
+}
+
+- (cv::Mat) filterLightnessContour: (cv::Mat) src slider_value: (int) slider_value {
+    cv::Mat dst;
+    int l_threshold = slider_value;
+    dst = [self binarizeByLightness:src l_threshold:l_threshold];
+    dst = [self drawContours:dst canvas:src];
+    return dst;
+}
+
+- (cv::Mat) filterLightnessBinalized: (cv::Mat) src slider_value: (int) slider_value {
+    int l_threshold = slider_value;
+    cv::Mat dst;
+    dst = [self binarizeByLightness:src l_threshold:l_threshold];
+    return dst;
+}
+
+- (cv::Mat) filterpyrDown: (cv::Mat) src slider_value: (int) slider_value {
+    cv::Mat dst;
+    cv::cvtColor( src, dst, cv::COLOR_BGR2GRAY);
+    int count_pyr =((float(slider_value)/255.0) * 5);
+    printf("count_pyr:%d\n",count_pyr);
+    for (int i = 0; i < count_pyr; i++){
+        cv::pyrDown( dst, dst );
+    }
+    cv::Canny( dst, dst, 10, 100, 3, true );
+    return dst;
 }
 
 - (void) createCameraWithParentView:(UIImageView*) parentView {
