@@ -25,9 +25,9 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     int slider_value = [[_param objectForKey: @"slider_value"] intValue];
     bool filter_on = [[_param objectForKey:@"filter_on"] boolValue];
     if (filter_on) {
-//        image = [self filterpyrDown:image slider_value:slider_value];
-//        image = [self filterLightnessBinalized:image slider_value:slider_value];
-        image = [self filterLightnessContour:image slider_value:slider_value];
+//        image = [self filterPyrDown:image slider_value:slider_value];            //pyrDown境界検出
+//        image = [self filterLightnessBinalized:image slider_value:slider_value]; //明るさによる二値化
+        image = [self filterLightnessContour:image slider_value:slider_value];   //明るさによって二値化し、境界を描画
     }
 }
 
@@ -46,7 +46,7 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     return dst;
 }
 
-- (cv::Mat) filterpyrDown: (cv::Mat) src slider_value: (int) slider_value {
+- (cv::Mat) filterPyrDown: (cv::Mat) src slider_value: (int) slider_value {
     cv::Mat dst;
     cv::cvtColor( src, dst, cv::COLOR_BGR2GRAY);
     int count_pyr =((float(slider_value)/255.0) * 5);
