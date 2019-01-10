@@ -23,9 +23,10 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     int slider_value = [[_param objectForKey: @"slider_value"] intValue];
     bool filter_on = [[_param objectForKey:@"filter_on"] boolValue];
     if (filter_on) {
-//        image = [self filterPyrDown:image slider_value:slider_value];            //pyrDown境界検出
+//        image = [self filterCanny:image slider_value:slider_value];            //Canny境界検出
+        image = [self filterCannyOverlay:image slider_value:slider_value];         //Cannyで検出した境界を元画像に重ねる
 //        image = [self filterLightnessBinalized:image slider_value:slider_value]; //明るさによる二値化
-        image = [self filterLightnessContour:image slider_value:slider_value];   //明るさによって二値化し、境界を描画
+//        image = [self filterLightnessContour:image slider_value:slider_value];   //明るさによって二値化し、境界を描画
     }
 }
 
@@ -44,15 +45,45 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     return dst;
 }
 
-- (cv::Mat) filterPyrDown: (cv::Mat) src slider_value: (int) slider_value {
+- (cv::Mat) filterCannyOverlay: (cv::Mat) src slider_value: (int) slider_value {
+    cv::Mat src2,dst;
+    src2 = [self filterCanny:src slider_value:slider_value];
+    cv::cvtColor(src2, src2, CV_GRAY2BGRA);
+    cv::resize(src2, src2, src.size());
+    dst = [self overlay:src layer:src2 color:cv::Scalar(0,0,0)];
+    return dst;
+}
+
+- (cv::Mat) overlay: (cv::Mat) back layer:(cv::Mat) layer color:(cv::Scalar) color {
+    //layerの0である画素はbackを残し、それ以外はcolorの色で上書きする
+    //backもlayerもBGRA画像で、同じサイズである必要がある
+    cv::Mat dst = back;
+    for(int y = 0; y < back.rows; y++ ){
+        for (int x = 0; x < back.cols; x++){
+            uchar cell_color[layer.channels()];
+            unsigned long cell_index = y * layer.step + x * layer.elemSize();
+            for(int c = 0; c < layer.channels(); ++c){
+                cell_color[c] = layer.data[ cell_index + c ] ;
+            }
+            if (cell_color[0] != 0 && cell_color[1] != 0 && cell_color[2] != 0){
+                for(int c = 0; c < 3; ++c){
+                    dst.data[cell_index + c] = color[c];
+                }
+            }
+        }
+    }
+    return dst;
+}
+
+- (cv::Mat) filterCanny: (cv::Mat) src slider_value: (int) slider_value {
     cv::Mat dst;
-    cv::cvtColor( src, dst, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(src, dst, cv::COLOR_BGRA2GRAY);
     int count_pyr =((float(slider_value)/255.0) * 5);
     printf("count_pyr:%d\n",count_pyr);
     for (int i = 0; i < count_pyr; i++){
         cv::pyrDown( dst, dst );
     }
-    cv::Canny( dst, dst, 10, 100, 3, true );
+    cv::Canny(dst, dst, 10, 100, 3, true);
     return dst;
 }
 
