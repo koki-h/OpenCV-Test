@@ -27,7 +27,19 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
         image = [self filterCannyOverlay:image slider_value:slider_value];         //Cannyで検出した境界を元画像に重ねる
 //        image = [self filterLightnessBinalized:image slider_value:slider_value]; //明るさによる二値化
 //        image = [self filterLightnessContour:image slider_value:slider_value];   //明るさによって二値化し、境界を描画
+//        image = [self filterInRange:image];
     }
+}
+- (cv::Mat) filterInRange: (cv::Mat) src {
+    cv::Mat hls = cv::Mat(src.rows , src.cols , CV_MAKETYPE(src.depth() , src.channels()));//;src.clone();
+    cv::cvtColor(src , hls , CV_BGR2HLS);
+    cv::Mat dst = hls.clone();
+    cv::Scalar lower,upper;
+    lower = cv::Scalar(0,2,2);
+    upper = cv::Scalar(179,252,255);
+    cv::inRange(hls , lower , upper , dst);
+
+    return dst;
 }
 
 - (cv::Mat) filterLightnessContour: (cv::Mat) src slider_value: (int) slider_value {
@@ -111,7 +123,7 @@ OpenCVWrapper() <CvVideoCameraDelegate> {
     std::vector< std::vector<cv::Point> > contours;
     cv::findContours(mask, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
     if (contours.size() > 1) {
-        cv::drawContours(canvas, contours, -1, cv::Scalar(255),1);
+        cv::drawContours(canvas, contours, -1, cv::Scalar(0,0,0),1);
     }
     return canvas;
 }
